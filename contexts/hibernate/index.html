@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Hibernate // Secure Foundation</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta property="og:title" content="Hibernate" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:url" content="https://securefoundation.github.io/contexts/hibernate/" />
+
+
+    <link href="https://securefoundation.github.io/contexts/hibernate/index.xml" rel="alternate" type="application/rss+xml" title="Secure Foundation" />
+    <link rel="shortcut icon" href="/favicon.png">
+
+    <link href="https://securefoundation.github.io/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+    <link href="https://securefoundation.github.io/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="https://securefoundation.github.io/css/style.css">
+
+    <link href="http://gmpg.org/xfn/11" rel="profile">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+
+    <meta name="generator" content="Hugo 0.19" />
+</head>
+
+
+
+
+<body>
+  <div id="container">
+    <header id="header">
+    <div id="header-outer" class="outer">
+        <div id="header-inner" class="inner">
+            <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+            <a id="logo" class="logo-text" href="https://securefoundation.github.io/">
+              Secure Foundation
+            </a>
+            <span class="subtitle-text">
+              
+                // hibernate
+              
+              
+            </span>
+            <nav id="main-nav">
+                
+            </nav>
+            <nav id="sub-nav">
+                <div id="search-form-wrap">
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+
+    
+    <section id="main" class="outer">
+      <section class="layout-wrap">
+
+        <div class="layout-wrap-inner">
+          <ul>
+            
+                
+                  
+                  <article class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        <header class="article-header">
+          <h1 class="article-title" itemprop="name">
+            <a href="/spring/db-query-injection/"><i class="fa fa-link fa-1" aria-hidden="true"></i></a>
+            DB Query Injection
+          </h1>
+        </header>
+        
+        <div class="article-meta">
+            
+            
+            
+        </div>
+        <div class="article-entry" itemprop="articleBody">
+          
+
+<h2 id="bad-practice">Bad Practice</h2>
+
+<p>Hibernate somewhat abstracts us from the database layer&hellip;</p>
+
+<p>But HQL is still vulnerable to injection attacks</p>
+
+
+
+  
+
+
+<div class="badcode"><pre style="line-height: 125%"><span></span><span style="color: #f8f8f2">session</span><span style="color: #f92672">.</span><span style="color: #a6e22e">createQuery</span><span style="color: #f92672">(</span><span style="color: #e6db74">&quot;from Foo f where f.name = &quot;</span> <span style="color: #f92672">+</span> <span style="color: #f8f8f2">name</span><span style="color: #f92672">);</span>
+</pre></div>
+
+
+
+<h2 id="good-practice">Good Practice</h2>
+
+<p>Use named parameters to safely combine user input with a query</p>
+
+<p>
+
+  
+
+
+<div class="goodcode"><pre style="line-height: 125%"><span></span><span style="color: #f8f8f2">Query</span> <span style="color: #f8f8f2">query</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">session</span><span style="color: #f92672">.</span><span style="color: #a6e22e">createQuery</span><span style="color: #f92672">(</span><span style="color: #e6db74">&quot;from Foo f where f.name = :name&quot;</span><span style="color: #f92672">);</span>
+
+<span style="color: #f8f8f2">query</span><span style="color: #f92672">.</span><span style="color: #a6e22e">setParameter</span><span style="color: #f92672">(</span><span style="color: #e6db74">&quot;name&quot;</span><span style="color: #f92672">,</span> <span style="color: #f8f8f2">name</span><span style="color: #f92672">)</span>
+</pre></div>
+
+</p>
+
+<p>Or, even better, we can use the Criteria API</p>
+
+<p>
+
+  
+
+
+<div class="goodcode"><pre style="line-height: 125%"><span></span><span style="color: #f8f8f2">CriteriaQuery</span><span style="color: #f92672">&lt;</span><span style="color: #f8f8f2">Foo</span><span style="color: #f92672">&gt;</span> <span style="color: #f8f8f2">criteria</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">builder</span><span style="color: #f92672">.</span><span style="color: #a6e22e">createQuery</span><span style="color: #f92672">(</span><span style="color: #f8f8f2">Foo</span><span style="color: #f92672">.</span><span style="color: #a6e22e">class</span><span style="color: #f92672">);</span>
+<span style="color: #f8f8f2">Root</span><span style="color: #f92672">&lt;</span><span style="color: #f8f8f2">Foo</span><span style="color: #f92672">&gt;</span> <span style="color: #f8f8f2">root</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">criteria</span><span style="color: #f92672">.</span><span style="color: #a6e22e">from</span><span style="color: #f92672">(</span><span style="color: #f8f8f2">Foo</span><span style="color: #f92672">.</span><span style="color: #a6e22e">class</span><span style="color: #f92672">);</span>
+<span style="color: #f8f8f2">criteria</span><span style="color: #f92672">.</span><span style="color: #a6e22e">select</span><span style="color: #f92672">(</span><span style="color: #f8f8f2">root</span><span style="color: #f92672">);</span>
+<span style="background-color: #49483e"><span style="color: #f8f8f2">criteria</span><span style="color: #f92672">.</span><span style="color: #a6e22e">where</span><span style="color: #f92672">(</span><span style="color: #f8f8f2">builder</span><span style="color: #f92672">.</span><span style="color: #a6e22e">equal</span><span style="color: #f92672">(</span><span style="color: #f8f8f2">root</span><span style="color: #f92672">.</span><span style="color: #a6e22e">get</span><span style="color: #f92672">(</span><span style="color: #f8f8f2">Foo_</span><span style="color: #f92672">.</span><span style="color: #a6e22e">name</span><span style="color: #f92672">),</span> <span style="color: #e6db74">&quot;Bar&quot;</span> <span style="color: #f92672">));</span>
+</span></pre></div>
+
+</p>
+
+
+
+          
+          
+          
+          
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+            
+          
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+
+          
+          
+        </div>
+
+        
+        
+        <div class="article-toc" >
+            <h3>Contents</h3>
+            <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#bad-practice">Bad Practice</a></li>
+<li><a href="#good-practice">Good Practice</a></li>
+</ul></li>
+</ul>
+</nav>
+        </div>
+        
+        
+
+        
+
+
+        
+    </div>
+    <nav id="article-nav">
+    
+    <a href="/spring/custom-auth/" id="article-nav-newer" class="article-nav-link-wrap">
+        <div class="article-nav-title"><span>&lt;</span>&nbsp;
+            Custom Auth Logic
+        </div>
+    </a>
+    
+    
+    <a href="/contexts/hibernate/" id="article-nav-older" class="article-nav-link-wrap">
+        <div class="article-nav-title">Hibernate&nbsp;<span>&gt;</span></div>
+    </a>
+    
+</nav>
+</article>
+
+                
+            
+          </ul>
+        </div>
+
+      </section>
+    </section>
+    <footer id="footer">
+  
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2017 Secure Foundation&nbsp;
+        </div>
+    </div>
+    
+    
+
+    <script src="https://code.jquery.com/jquery-3.2.0.min.js"></script>
+    
+    <script src="https://securefoundation.github.io/js/add-code-icons.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha256-NuCn4IvuZXdBaFKJOAcsU2Q3ZpwbdFisd5dux4jkQ5w=" crossorigin="anonymous" />
+    
+    <link rel="stylesheet" href="https://securefoundation.github.io/css/securefoundation.css"/>
+
+    <script>
+        document.getElementById('main-nav-toggle').addEventListener('click', function () {
+            var header = document.getElementById('header');
+            if (header.classList.contains('mobile-on')) {
+                header.classList.remove('mobile-on');
+            } else {
+                header.classList.add('mobile-on');
+            }
+        });
+    </script>
+</footer>
+
+  </div>
+</body>
+</html>

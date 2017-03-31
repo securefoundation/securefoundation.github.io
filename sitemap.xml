@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <url>
+    <loc>https://securefoundation.github.io/spring/csrf-protection/</loc>
+  </url>
+  
+  <url>
+    <loc>https://securefoundation.github.io/react/code-injection/</loc>
+  </url>
+  
+  <url>
+    <loc>https://securefoundation.github.io/tasks/content-security-policy/</loc>
+  </url>
+  
+  <url>
+    <loc>https://securefoundation.github.io/contexts/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://securefoundation.github.io/spring/custom-auth/</loc>
+  </url>
+  
+  <url>
+    <loc>https://securefoundation.github.io/spring/db-query-injection/</loc>
+  </url>
+  
+  <url>
+    <loc>https://securefoundation.github.io/contexts/hibernate/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://securefoundation.github.io/react/markup-injection/</loc>
+  </url>
+  
+  <url>
+    <loc>https://securefoundation.github.io/react/object-injection/</loc>
+  </url>
+  
+  <url>
+    <loc>https://securefoundation.github.io/contexts/react/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://securefoundation.github.io/react/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://securefoundation.github.io/react/schema-validation/</loc>
+  </url>
+  
+  <url>
+    <loc>https://securefoundation.github.io/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://securefoundation.github.io/contexts/spring/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://securefoundation.github.io/spring/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://securefoundation.github.io/react/string-template-injection/</loc>
+  </url>
+  
+  <url>
+    <loc>https://securefoundation.github.io/tasks/</loc>
+    <priority>0</priority>
+  </url>
+  
+</urlset>

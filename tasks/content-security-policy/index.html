@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Content Security Policy // Secure Foundation</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta property="og:title" content="Content Security Policy" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:url" content="https://securefoundation.github.io/tasks/content-security-policy/" />
+
+
+    <link href="" rel="alternate" type="application/rss+xml" title="Secure Foundation" />
+    <link rel="shortcut icon" href="/favicon.png">
+
+    <link href="https://securefoundation.github.io/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+    <link href="https://securefoundation.github.io/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="https://securefoundation.github.io/css/style.css">
+
+    <link href="http://gmpg.org/xfn/11" rel="profile">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+
+    <meta name="generator" content="Hugo 0.19" />
+</head>
+
+
+<body>
+<div id="container">
+    <header id="header">
+    <div id="header-outer" class="outer">
+        <div id="header-inner" class="inner">
+            <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+            <a id="logo" class="logo-text" href="https://securefoundation.github.io/">
+              Secure Foundation
+            </a>
+            <span class="subtitle-text">
+              
+              
+                
+                
+                  // { react, spring }
+                
+              
+            </span>
+            <nav id="main-nav">
+                
+            </nav>
+            <nav id="sub-nav">
+                <div id="search-form-wrap">
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+
+    <section id="main" class="outer">
+        <article class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        <header class="article-header">
+          <h1 class="article-title" itemprop="name">
+            <a href="/tasks/content-security-policy/"><i class="fa fa-link fa-1" aria-hidden="true"></i></a>
+            Content Security Policy
+          </h1>
+        </header>
+        
+        <div class="article-meta">
+            
+            
+            
+        </div>
+        <div class="article-entry" itemprop="articleBody">
+          
+
+<h2 id="description">Description</h2>
+
+<p>Content Security Policy limits the resources that a web browser will
+load, making it more difficult for attackers to carry out a
+<a href="https://www.owasp.org/index.php/Cross-site_Scripting_%28XSS%29">Cross Site Scripting</a>
+attack.</p>
+
+<p>When enabling CSP, we can define a whitelist of resources that the
+browser will load. Any resources (even including inline scripts) that
+are not explicitly enabled in the whitelist will be blocked by the browser.</p>
+
+<p>As an <a href="https://blogs.technet.microsoft.com/srd/2013/09/27/software-defense-series-exploit-mitigation-and-vulnerability-detection/">exploit mitigation</a>,
+it&rsquo;s important to remember that while CSP makes exploitation more
+difficult, it does not prevent the bugs that make an exploit possible
+in the first place (lack of appropriate
+encoding/sanitization). Therefore, its protection will never be
+complete, and people will continue to find bypasses for even the most
+rigerous policies. That said, it&rsquo;s an important part of a Defense in
+Depth strategy for any web application.</p>
+
+<h2 id="acceptance-criteria">Acceptance Criteria</h2>
+
+<ul>
+<li>A policy is created that blocks any resources not required by the application</li>
+<li>The policy is enabled via the <code>Content-Security-Policy</code> header</li>
+<li>An api or service is created to parse CSP reports</li>
+<li>Reporting is enabled via the <code>report-uri</code> directive</li>
+<li>The team understands what limitations CSP adds, and how to check for violations</li>
+<li>The team has a process for updating the policy as requirements change</li>
+</ul>
+
+<h2 id="resources">Resources</h2>
+
+<ul>
+<li><a href="https://scotthelme.co.uk/content-security-policy-an-introduction/">https://scotthelme.co.uk/content-security-policy-an-introduction/</a></li>
+<li><a href="https://developers.google.com/web/fundamentals/security/csp/">https://developers.google.com/web/fundamentals/security/csp/</a></li>
+</ul>
+
+
+
+          
+          
+          
+          
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+                
+              
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+            
+          
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+
+          
+            <h2>Related Content</h2>
+            
+            
+              <li>
+                Practice:
+                <a href="https://securefoundation.github.io/react/markup-injection/">Markup Injection</a>
+              </li>
+            
+          
+          
+        </div>
+
+        
+        
+        <div class="article-toc" >
+            <h3>Contents</h3>
+            <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#description">Description</a></li>
+<li><a href="#acceptance-criteria">Acceptance Criteria</a></li>
+<li><a href="#resources">Resources</a></li>
+</ul></li>
+</ul>
+</nav>
+        </div>
+        
+        
+
+        
+
+
+        
+    </div>
+    <nav id="article-nav">
+    
+    <a href="/react/code-injection/" id="article-nav-newer" class="article-nav-link-wrap">
+        <div class="article-nav-title"><span>&lt;</span>&nbsp;
+            Code Injection
+        </div>
+    </a>
+    
+    
+    <a href="/contexts/" id="article-nav-older" class="article-nav-link-wrap">
+        <div class="article-nav-title">Contexts&nbsp;<span>&gt;</span></div>
+    </a>
+    
+</nav>
+</article>
+
+        
+    </section>
+    <footer id="footer">
+  
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2017 Secure Foundation&nbsp;
+        </div>
+    </div>
+    
+    
+
+    <script src="https://code.jquery.com/jquery-3.2.0.min.js"></script>
+    
+    <script src="https://securefoundation.github.io/js/add-code-icons.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha256-NuCn4IvuZXdBaFKJOAcsU2Q3ZpwbdFisd5dux4jkQ5w=" crossorigin="anonymous" />
+    
+    <link rel="stylesheet" href="https://securefoundation.github.io/css/securefoundation.css"/>
+
+    <script>
+        document.getElementById('main-nav-toggle').addEventListener('click', function () {
+            var header = document.getElementById('header');
+            if (header.classList.contains('mobile-on')) {
+                header.classList.remove('mobile-on');
+            } else {
+                header.classList.add('mobile-on');
+            }
+        });
+    </script>
+</footer>
+
+</div>
+</body>
+</html>

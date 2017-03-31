@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Spring on Secure Foundation</title>
+    <link>https://securefoundation.github.io/contexts/spring/index.xml</link>
+    <description>Recent content in Spring on Secure Foundation</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <atom:link href="https://securefoundation.github.io/contexts/spring/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>CSRF Protection</title>
+      <link>https://securefoundation.github.io/spring/csrf-protection/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://securefoundation.github.io/spring/csrf-protection/</guid>
+      <description>
+
+&lt;h2 id=&#34;bad-practice&#34;&gt;Bad Practice&lt;/h2&gt;
+
+&lt;p&gt;Spring doesn&amp;rsquo;t come with any built in
+&lt;a href=&#34;https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)&#34;&gt;CSRF&lt;/a&gt;
+protection.&lt;/p&gt;
+
+&lt;h2 id=&#34;good-practice&#34;&gt;Good Practice&lt;/h2&gt;
+
+&lt;p&gt;But if we include &lt;a href=&#34;https://projects.spring.io/spring-security/&#34;&gt;Spring Security&lt;/a&gt;, it will be enabled by default:&lt;/p&gt;
+
+
+
+  
+
+
+&lt;div class=&#34;goodcode&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;compile &amp;#39;org.springframework.security:spring-security-web:4&amp;#39;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+
+&lt;p&gt;Tokens will be added to any &lt;code&gt;&amp;lt;form:form&amp;gt;&lt;/code&gt; tags:&lt;/p&gt;
+
+
+
+  
+
+
+&lt;div class=&#34;goodcode&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;&amp;lt;form:form&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;action=&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;/launchTheMissiles&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;method=&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;post&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span style=&#34;color: #f92672&#34;&gt;&amp;lt;input&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;type=&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;submit&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;value=&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;Panic!&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color: #f92672&#34;&gt;&amp;lt;/form:form&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+
+&lt;h2 id=&#34;gotcha&#34;&gt;Gotcha&lt;/h2&gt;
+
+
+
+  
+
+
+&lt;div class=&#34;badcode&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;&amp;lt;form&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;action=&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;/launchTheMissiles&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;method=&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;post&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span style=&#34;color: #f92672&#34;&gt;&amp;lt;input&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;type=&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;submit&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;value=&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;Panic!&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color: #f92672&#34;&gt;&amp;lt;/form&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+
+&lt;p&gt;But tokens won’t be added to any plain HTML forms!&lt;/p&gt;
+
+&lt;p&gt;If we bypass &lt;code&gt;&amp;lt;form:form&amp;gt;&lt;/code&gt; we need to include the csrf token manually:&lt;/p&gt;
+
+
+
+  
+
+
+&lt;div class=&#34;goodcode&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;&amp;lt;form&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;action=&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;/launchTheMissiles&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;method=&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;post&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span style=&#34;color: #f92672&#34;&gt;&amp;lt;input&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;type=&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;submit&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;value=&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;Panic!&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
+  &lt;span style=&#34;color: #f92672&#34;&gt;&amp;lt;input&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;type=&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;hidden&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;name=&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;${_csrf.parameterName}&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;value=&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;${_csrf.token}&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color: #f92672&#34;&gt;&amp;lt;/form&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+
+&lt;h2 id=&#34;gotcha-1&#34;&gt;Gotcha&lt;/h2&gt;
+
+&lt;p&gt;If you disable it, make sure you know what you are doing.&lt;/p&gt;
+
+&lt;p&gt;
+
+  
+
+
+&lt;div class=&#34;badcode&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;&amp;lt;http&amp;gt;&lt;/span&gt;
+	&lt;span style=&#34;color: #f92672&#34;&gt;&amp;lt;csrf&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;disabled=&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;true&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color: #f92672&#34;&gt;&amp;lt;/http&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Content Security Policy</title>
+      <link>https://securefoundation.github.io/tasks/content-security-policy/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://securefoundation.github.io/tasks/content-security-policy/</guid>
+      <description>
+
+&lt;h2 id=&#34;description&#34;&gt;Description&lt;/h2&gt;
+
+&lt;p&gt;Content Security Policy limits the resources that a web browser will
+load, making it more difficult for attackers to carry out a
+&lt;a href=&#34;https://www.owasp.org/index.php/Cross-site_Scripting_%28XSS%29&#34;&gt;Cross Site Scripting&lt;/a&gt;
+attack.&lt;/p&gt;
+
+&lt;p&gt;When enabling CSP, we can define a whitelist of resources that the
+browser will load. Any resources (even including inline scripts) that
+are not explicitly enabled in the whitelist will be blocked by the browser.&lt;/p&gt;
+
+&lt;p&gt;As an &lt;a href=&#34;https://blogs.technet.microsoft.com/srd/2013/09/27/software-defense-series-exploit-mitigation-and-vulnerability-detection/&#34;&gt;exploit mitigation&lt;/a&gt;,
+it&amp;rsquo;s important to remember that while CSP makes exploitation more
+difficult, it does not prevent the bugs that make an exploit possible
+in the first place (lack of appropriate
+encoding/sanitization). Therefore, its protection will never be
+complete, and people will continue to find bypasses for even the most
+rigerous policies. That said, it&amp;rsquo;s an important part of a Defense in
+Depth strategy for any web application.&lt;/p&gt;
+
+&lt;h2 id=&#34;acceptance-criteria&#34;&gt;Acceptance Criteria&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;A policy is created that blocks any resources not required by the application&lt;/li&gt;
+&lt;li&gt;The policy is enabled via the &lt;code&gt;Content-Security-Policy&lt;/code&gt; header&lt;/li&gt;
+&lt;li&gt;An api or service is created to parse CSP reports&lt;/li&gt;
+&lt;li&gt;Reporting is enabled via the &lt;code&gt;report-uri&lt;/code&gt; directive&lt;/li&gt;
+&lt;li&gt;The team understands what limitations CSP adds, and how to check for violations&lt;/li&gt;
+&lt;li&gt;The team has a process for updating the policy as requirements change&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;resources&#34;&gt;Resources&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://scotthelme.co.uk/content-security-policy-an-introduction/&#34;&gt;https://scotthelme.co.uk/content-security-policy-an-introduction/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://developers.google.com/web/fundamentals/security/csp/&#34;&gt;https://developers.google.com/web/fundamentals/security/csp/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Custom Auth Logic</title>
+      <link>https://securefoundation.github.io/spring/custom-auth/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://securefoundation.github.io/spring/custom-auth/</guid>
+      <description>
+
+&lt;h2 id=&#34;bad-practice&#34;&gt;Bad Practice&lt;/h2&gt;
+
+&lt;p&gt;Auth logic is surprisingly easy to mess up&lt;/p&gt;
+
+&lt;p&gt;We should not be writing it ourselves!&lt;/p&gt;
+
+
+
+  
+
+
+&lt;div class=&#34;badcode&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;SessionInterceptor&lt;/span&gt; &lt;span style=&#34;color: #66d9ef&#34;&gt;extends&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;...&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color: #66d9ef&#34;&gt;boolean&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;preHandle&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;(...)&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;{&lt;/span&gt;
+&lt;span style=&#34;background-color: #49483e&#34;&gt;        &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;someCustomAuthCode&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;(...);&lt;/span&gt;
+&lt;/span&gt;    &lt;span style=&#34;color: #f92672&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color: #f92672&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+
+&lt;h2 id=&#34;good-practice&#34;&gt;Good Practice&lt;/h2&gt;
+
+&lt;p&gt;Spring Security is a widely used (and tested) auth framework&lt;/p&gt;
+
+&lt;p&gt;Define your auth logic declaratively&lt;/p&gt;
+
+&lt;p&gt;Require auth by default&lt;/p&gt;
+
+&lt;p&gt;
+
+  
+
+
+&lt;div class=&#34;goodcode&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;compile &amp;#39;org.springframework.security:spring-security-web:4&amp;#39;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;/p&gt;
+
+
+
+  
+
+
+&lt;div class=&#34;goodcode&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;protected&lt;/span&gt; &lt;span style=&#34;color: #66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;configure&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;HttpSecurity&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;http&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #66d9ef&#34;&gt;throws&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;Exception&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;{&lt;/span&gt;
+	&lt;span style=&#34;color: #f8f8f2&#34;&gt;http&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;authorizeRequests&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;()&lt;/span&gt;
+		&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;antMatchers&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;/resources/**&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;/signup&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;).&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;permitAll&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;()&lt;/span&gt;
+		&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;antMatchers&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;/admin/**&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;).&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;hasRole&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;ADMIN&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;);&lt;/span&gt;
+&lt;span style=&#34;color: #f92672&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+</description>
+    </item>
+    
+    <item>
+      <title>DB Query Injection</title>
+      <link>https://securefoundation.github.io/spring/db-query-injection/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://securefoundation.github.io/spring/db-query-injection/</guid>
+      <description>
+
+&lt;h2 id=&#34;bad-practice&#34;&gt;Bad Practice&lt;/h2&gt;
+
+&lt;p&gt;Hibernate somewhat abstracts us from the database layer&amp;hellip;&lt;/p&gt;
+
+&lt;p&gt;But HQL is still vulnerable to injection attacks&lt;/p&gt;
+
+
+
+  
+
+
+&lt;div class=&#34;badcode&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;session&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;createQuery&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;from Foo f where f.name = &amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;name&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;);&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+
+&lt;h2 id=&#34;good-practice&#34;&gt;Good Practice&lt;/h2&gt;
+
+&lt;p&gt;Use named parameters to safely combine user input with a query&lt;/p&gt;
+
+&lt;p&gt;
+
+  
+
+
+&lt;div class=&#34;goodcode&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;Query&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;query&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;session&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;createQuery&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;from Foo f where f.name = :name&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;);&lt;/span&gt;
+
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;query&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;setParameter&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;name&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;name&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;/p&gt;
+
+&lt;p&gt;Or, even better, we can use the Criteria API&lt;/p&gt;
+
+&lt;p&gt;
+
+  
+
+
+&lt;div class=&#34;goodcode&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;CriteriaQuery&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;Foo&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;criteria&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;builder&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;createQuery&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;Foo&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;);&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;Root&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;Foo&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;root&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;criteria&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;from&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;Foo&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;);&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;criteria&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;select&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;root&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;);&lt;/span&gt;
+&lt;span style=&#34;background-color: #49483e&#34;&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;criteria&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;where&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;builder&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;equal&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;root&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;get&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;Foo_&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #a6e22e&#34;&gt;name&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;),&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;Bar&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;));&lt;/span&gt;
+&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

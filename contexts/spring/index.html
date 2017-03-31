@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Spring // Secure Foundation</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta property="og:title" content="Spring" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:url" content="https://securefoundation.github.io/contexts/spring/" />
+
+
+    <link href="https://securefoundation.github.io/contexts/spring/index.xml" rel="alternate" type="application/rss+xml" title="Secure Foundation" />
+    <link rel="shortcut icon" href="/favicon.png">
+
+    <link href="https://securefoundation.github.io/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+    <link href="https://securefoundation.github.io/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="https://securefoundation.github.io/css/style.css">
+
+    <link href="http://gmpg.org/xfn/11" rel="profile">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+
+    <meta name="generator" content="Hugo 0.19" />
+</head>
+
+
+
+
+<body>
+  <div id="container">
+    <header id="header">
+    <div id="header-outer" class="outer">
+        <div id="header-inner" class="inner">
+            <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+            <a id="logo" class="logo-text" href="https://securefoundation.github.io/">
+              Secure Foundation
+            </a>
+            <span class="subtitle-text">
+              
+                // spring
+              
+              
+            </span>
+            <nav id="main-nav">
+                
+            </nav>
+            <nav id="sub-nav">
+                <div id="search-form-wrap">
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+
+    
+    <section id="main" class="outer">
+      <section class="layout-wrap">
+
+        <div class="layout-wrap-inner">
+          <ul>
+            
+                
+                  
+                  <article class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        <header class="article-header">
+          <h1 class="article-title" itemprop="name">
+            <a href="/spring/csrf-protection/"><i class="fa fa-link fa-1" aria-hidden="true"></i></a>
+            CSRF Protection
+          </h1>
+        </header>
+        
+        <div class="article-meta">
+            
+            
+            
+        </div>
+        <div class="article-entry" itemprop="articleBody">
+          
+
+<h2 id="bad-practice">Bad Practice</h2>
+
+<p>Spring doesn&rsquo;t come with any built in
+<a href="https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)">CSRF</a>
+protection.</p>
+
+<h2 id="good-practice">Good Practice</h2>
+
+<p>But if we include <a href="https://projects.spring.io/spring-security/">Spring Security</a>, it will be enabled by default:</p>
+
+
+
+  
+
+
+<div class="goodcode"><pre style="line-height: 125%"><span></span>compile &#39;org.springframework.security:spring-security-web:4&#39;
+</pre></div>
+
+
+
+<p>Tokens will be added to any <code>&lt;form:form&gt;</code> tags:</p>
+
+
+
+  
+
+
+<div class="goodcode"><pre style="line-height: 125%"><span></span><span style="color: #f92672">&lt;form:form</span> <span style="color: #a6e22e">action=</span><span style="color: #e6db74">&quot;/launchTheMissiles&quot;</span> <span style="color: #a6e22e">method=</span><span style="color: #e6db74">&quot;post&quot;</span><span style="color: #f92672">&gt;</span>
+  <span style="color: #f92672">&lt;input</span> <span style="color: #a6e22e">type=</span><span style="color: #e6db74">&quot;submit&quot;</span> <span style="color: #a6e22e">value=</span><span style="color: #e6db74">&quot;Panic!&quot;</span> <span style="color: #f92672">/&gt;</span>
+<span style="color: #f92672">&lt;/form:form&gt;</span>
+</pre></div>
+
+
+
+<h2 id="gotcha">Gotcha</h2>
+
+
+
+  
+
+
+<div class="badcode"><pre style="line-height: 125%"><span></span><span style="color: #f92672">&lt;form</span> <span style="color: #a6e22e">action=</span><span style="color: #e6db74">&quot;/launchTheMissiles&quot;</span> <span style="color: #a6e22e">method=</span><span style="color: #e6db74">&quot;post&quot;</span><span style="color: #f92672">&gt;</span>
+  <span style="color: #f92672">&lt;input</span> <span style="color: #a6e22e">type=</span><span style="color: #e6db74">&quot;submit&quot;</span> <span style="color: #a6e22e">value=</span><span style="color: #e6db74">&quot;Panic!&quot;</span> <span style="color: #f92672">/&gt;</span>
+<span style="color: #f92672">&lt;/form&gt;</span>
+</pre></div>
+
+
+
+<p>But tokens won’t be added to any plain HTML forms!</p>
+
+<p>If we bypass <code>&lt;form:form&gt;</code> we need to include the csrf token manually:</p>
+
+
+
+  
+
+
+<div class="goodcode"><pre style="line-height: 125%"><span></span><span style="color: #f92672">&lt;form</span> <span style="color: #a6e22e">action=</span><span style="color: #e6db74">&quot;/launchTheMissiles&quot;</span> <span style="color: #a6e22e">method=</span><span style="color: #e6db74">&quot;post&quot;</span><span style="color: #f92672">&gt;</span>
+  <span style="color: #f92672">&lt;input</span> <span style="color: #a6e22e">type=</span><span style="color: #e6db74">&quot;submit&quot;</span> <span style="color: #a6e22e">value=</span><span style="color: #e6db74">&quot;Panic!&quot;</span> <span style="color: #f92672">/&gt;</span>
+  <span style="color: #f92672">&lt;input</span> <span style="color: #a6e22e">type=</span><span style="color: #e6db74">&quot;hidden&quot;</span> <span style="color: #a6e22e">name=</span><span style="color: #e6db74">&quot;${_csrf.parameterName}&quot;</span> <span style="color: #a6e22e">value=</span><span style="color: #e6db74">&quot;${_csrf.token}&quot;</span><span style="color: #f92672">/&gt;</span>
+<span style="color: #f92672">&lt;/form&gt;</span>
+</pre></div>
+
+
+
+<h2 id="gotcha-1">Gotcha</h2>
+
+<p>If you disable it, make sure you know what you are doing.</p>
+
+<p>
+
+  
+
+
+<div class="badcode"><pre style="line-height: 125%"><span></span><span style="color: #f92672">&lt;http&gt;</span>
+	<span style="color: #f92672">&lt;csrf</span> <span style="color: #a6e22e">disabled=</span><span style="color: #e6db74">&quot;true&quot;</span><span style="color: #f92672">/&gt;</span>
+<span style="color: #f92672">&lt;/http&gt;</span>
+</pre></div>
+
+</p>
+
+
+
+          
+          
+          
+          
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+            
+          
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+
+          
+          
+        </div>
+
+        
+        
+        <div class="article-toc" >
+            <h3>Contents</h3>
+            <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#bad-practice">Bad Practice</a></li>
+<li><a href="#good-practice">Good Practice</a></li>
+<li><a href="#gotcha">Gotcha</a></li>
+<li><a href="#gotcha-1">Gotcha</a></li>
+</ul></li>
+</ul>
+</nav>
+        </div>
+        
+        
+
+        
+
+
+        
+    </div>
+    <nav id="article-nav">
+    
+    
+    <a href="/react/code-injection/" id="article-nav-older" class="article-nav-link-wrap">
+        <div class="article-nav-title">Code Injection&nbsp;<span>&gt;</span></div>
+    </a>
+    
+</nav>
+</article>
+
+                
+                  
+                  <article class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        <header class="article-header">
+          <h1 class="article-title" itemprop="name">
+            <a href="/spring/custom-auth/"><i class="fa fa-link fa-1" aria-hidden="true"></i></a>
+            Custom Auth Logic
+          </h1>
+        </header>
+        
+        <div class="article-meta">
+            
+            
+            
+        </div>
+        <div class="article-entry" itemprop="articleBody">
+          
+
+<h2 id="bad-practice">Bad Practice</h2>
+
+<p>Auth logic is surprisingly easy to mess up</p>
+
+<p>We should not be writing it ourselves!</p>
+
+
+
+  
+
+
+<div class="badcode"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">public</span> <span style="color: #66d9ef">class</span> <span style="color: #a6e22e">SessionInterceptor</span> <span style="color: #66d9ef">extends</span> <span style="color: #f92672">...</span> <span style="color: #f92672">{</span>
+    <span style="color: #66d9ef">public</span> <span style="color: #66d9ef">boolean</span> <span style="color: #a6e22e">preHandle</span><span style="color: #f92672">(...)</span> <span style="color: #f92672">{</span>
+<span style="background-color: #49483e">        <span style="color: #66d9ef">return</span> <span style="color: #f8f8f2">someCustomAuthCode</span><span style="color: #f92672">(...);</span>
+</span>    <span style="color: #f92672">}</span>
+<span style="color: #f92672">}</span>
+</pre></div>
+
+
+
+<h2 id="good-practice">Good Practice</h2>
+
+<p>Spring Security is a widely used (and tested) auth framework</p>
+
+<p>Define your auth logic declaratively</p>
+
+<p>Require auth by default</p>
+
+<p>
+
+  
+
+
+<div class="goodcode"><pre style="line-height: 125%"><span></span>compile &#39;org.springframework.security:spring-security-web:4&#39;
+</pre></div>
+
+</p>
+
+
+
+  
+
+
+<div class="goodcode"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">protected</span> <span style="color: #66d9ef">void</span> <span style="color: #a6e22e">configure</span><span style="color: #f92672">(</span><span style="color: #f8f8f2">HttpSecurity</span> <span style="color: #f8f8f2">http</span><span style="color: #f92672">)</span> <span style="color: #66d9ef">throws</span> <span style="color: #f8f8f2">Exception</span> <span style="color: #f92672">{</span>
+	<span style="color: #f8f8f2">http</span><span style="color: #f92672">.</span><span style="color: #a6e22e">authorizeRequests</span><span style="color: #f92672">()</span>
+		<span style="color: #f92672">.</span><span style="color: #a6e22e">antMatchers</span><span style="color: #f92672">(</span><span style="color: #e6db74">&quot;/resources/**&quot;</span><span style="color: #f92672">,</span> <span style="color: #e6db74">&quot;/signup&quot;</span><span style="color: #f92672">).</span><span style="color: #a6e22e">permitAll</span><span style="color: #f92672">()</span>
+		<span style="color: #f92672">.</span><span style="color: #a6e22e">antMatchers</span><span style="color: #f92672">(</span><span style="color: #e6db74">&quot;/admin/**&quot;</span><span style="color: #f92672">).</span><span style="color: #a6e22e">hasRole</span><span style="color: #f92672">(</span><span style="color: #e6db74">&quot;ADMIN&quot;</span><span style="color: #f92672">);</span>
+<span style="color: #f92672">}</span>
+</pre></div>
+
+
+
+
+
+          
+          
+          
+          
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+            
+          
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+
+          
+          
+        </div>
+
+        
+        
+        <div class="article-toc" >
+            <h3>Contents</h3>
+            <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#bad-practice">Bad Practice</a></li>
+<li><a href="#good-practice">Good Practice</a></li>
+</ul></li>
+</ul>
+</nav>
+        </div>
+        
+        
+
+        
+
+
+        
+    </div>
+    <nav id="article-nav">
+    
+    <a href="/contexts/" id="article-nav-newer" class="article-nav-link-wrap">
+        <div class="article-nav-title"><span>&lt;</span>&nbsp;
+            Contexts
+        </div>
+    </a>
+    
+    
+    <a href="/spring/db-query-injection/" id="article-nav-older" class="article-nav-link-wrap">
+        <div class="article-nav-title">DB Query Injection&nbsp;<span>&gt;</span></div>
+    </a>
+    
+</nav>
+</article>
+
+                
+                  
+                  <article class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        <header class="article-header">
+          <h1 class="article-title" itemprop="name">
+            <a href="/spring/db-query-injection/"><i class="fa fa-link fa-1" aria-hidden="true"></i></a>
+            DB Query Injection
+          </h1>
+        </header>
+        
+        <div class="article-meta">
+            
+            
+            
+        </div>
+        <div class="article-entry" itemprop="articleBody">
+          
+
+<h2 id="bad-practice">Bad Practice</h2>
+
+<p>Hibernate somewhat abstracts us from the database layer&hellip;</p>
+
+<p>But HQL is still vulnerable to injection attacks</p>
+
+
+
+  
+
+
+<div class="badcode"><pre style="line-height: 125%"><span></span><span style="color: #f8f8f2">session</span><span style="color: #f92672">.</span><span style="color: #a6e22e">createQuery</span><span style="color: #f92672">(</span><span style="color: #e6db74">&quot;from Foo f where f.name = &quot;</span> <span style="color: #f92672">+</span> <span style="color: #f8f8f2">name</span><span style="color: #f92672">);</span>
+</pre></div>
+
+
+
+<h2 id="good-practice">Good Practice</h2>
+
+<p>Use named parameters to safely combine user input with a query</p>
+
+<p>
+
+  
+
+
+<div class="goodcode"><pre style="line-height: 125%"><span></span><span style="color: #f8f8f2">Query</span> <span style="color: #f8f8f2">query</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">session</span><span style="color: #f92672">.</span><span style="color: #a6e22e">createQuery</span><span style="color: #f92672">(</span><span style="color: #e6db74">&quot;from Foo f where f.name = :name&quot;</span><span style="color: #f92672">);</span>
+
+<span style="color: #f8f8f2">query</span><span style="color: #f92672">.</span><span style="color: #a6e22e">setParameter</span><span style="color: #f92672">(</span><span style="color: #e6db74">&quot;name&quot;</span><span style="color: #f92672">,</span> <span style="color: #f8f8f2">name</span><span style="color: #f92672">)</span>
+</pre></div>
+
+</p>
+
+<p>Or, even better, we can use the Criteria API</p>
+
+<p>
+
+  
+
+
+<div class="goodcode"><pre style="line-height: 125%"><span></span><span style="color: #f8f8f2">CriteriaQuery</span><span style="color: #f92672">&lt;</span><span style="color: #f8f8f2">Foo</span><span style="color: #f92672">&gt;</span> <span style="color: #f8f8f2">criteria</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">builder</span><span style="color: #f92672">.</span><span style="color: #a6e22e">createQuery</span><span style="color: #f92672">(</span><span style="color: #f8f8f2">Foo</span><span style="color: #f92672">.</span><span style="color: #a6e22e">class</span><span style="color: #f92672">);</span>
+<span style="color: #f8f8f2">Root</span><span style="color: #f92672">&lt;</span><span style="color: #f8f8f2">Foo</span><span style="color: #f92672">&gt;</span> <span style="color: #f8f8f2">root</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">criteria</span><span style="color: #f92672">.</span><span style="color: #a6e22e">from</span><span style="color: #f92672">(</span><span style="color: #f8f8f2">Foo</span><span style="color: #f92672">.</span><span style="color: #a6e22e">class</span><span style="color: #f92672">);</span>
+<span style="color: #f8f8f2">criteria</span><span style="color: #f92672">.</span><span style="color: #a6e22e">select</span><span style="color: #f92672">(</span><span style="color: #f8f8f2">root</span><span style="color: #f92672">);</span>
+<span style="background-color: #49483e"><span style="color: #f8f8f2">criteria</span><span style="color: #f92672">.</span><span style="color: #a6e22e">where</span><span style="color: #f92672">(</span><span style="color: #f8f8f2">builder</span><span style="color: #f92672">.</span><span style="color: #a6e22e">equal</span><span style="color: #f92672">(</span><span style="color: #f8f8f2">root</span><span style="color: #f92672">.</span><span style="color: #a6e22e">get</span><span style="color: #f92672">(</span><span style="color: #f8f8f2">Foo_</span><span style="color: #f92672">.</span><span style="color: #a6e22e">name</span><span style="color: #f92672">),</span> <span style="color: #e6db74">&quot;Bar&quot;</span> <span style="color: #f92672">));</span>
+</span></pre></div>
+
+</p>
+
+
+
+          
+          
+          
+          
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+            
+          
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+
+          
+          
+        </div>
+
+        
+        
+        <div class="article-toc" >
+            <h3>Contents</h3>
+            <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#bad-practice">Bad Practice</a></li>
+<li><a href="#good-practice">Good Practice</a></li>
+</ul></li>
+</ul>
+</nav>
+        </div>
+        
+        
+
+        
+
+
+        
+    </div>
+    <nav id="article-nav">
+    
+    <a href="/spring/custom-auth/" id="article-nav-newer" class="article-nav-link-wrap">
+        <div class="article-nav-title"><span>&lt;</span>&nbsp;
+            Custom Auth Logic
+        </div>
+    </a>
+    
+    
+    <a href="/contexts/hibernate/" id="article-nav-older" class="article-nav-link-wrap">
+        <div class="article-nav-title">Hibernate&nbsp;<span>&gt;</span></div>
+    </a>
+    
+</nav>
+</article>
+
+                
+            
+                
+                  
+                  <article class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        <header class="article-header">
+          <h1 class="article-title" itemprop="name">
+            <a href="/tasks/content-security-policy/"><i class="fa fa-link fa-1" aria-hidden="true"></i></a>
+            Content Security Policy
+          </h1>
+        </header>
+        
+        <div class="article-meta">
+            
+            
+            
+        </div>
+        <div class="article-entry" itemprop="articleBody">
+          
+
+<h2 id="description">Description</h2>
+
+<p>Content Security Policy limits the resources that a web browser will
+load, making it more difficult for attackers to carry out a
+<a href="https://www.owasp.org/index.php/Cross-site_Scripting_%28XSS%29">Cross Site Scripting</a>
+attack.</p>
+
+<p>When enabling CSP, we can define a whitelist of resources that the
+browser will load. Any resources (even including inline scripts) that
+are not explicitly enabled in the whitelist will be blocked by the browser.</p>
+
+<p>As an <a href="https://blogs.technet.microsoft.com/srd/2013/09/27/software-defense-series-exploit-mitigation-and-vulnerability-detection/">exploit mitigation</a>,
+it&rsquo;s important to remember that while CSP makes exploitation more
+difficult, it does not prevent the bugs that make an exploit possible
+in the first place (lack of appropriate
+encoding/sanitization). Therefore, its protection will never be
+complete, and people will continue to find bypasses for even the most
+rigerous policies. That said, it&rsquo;s an important part of a Defense in
+Depth strategy for any web application.</p>
+
+<h2 id="acceptance-criteria">Acceptance Criteria</h2>
+
+<ul>
+<li>A policy is created that blocks any resources not required by the application</li>
+<li>The policy is enabled via the <code>Content-Security-Policy</code> header</li>
+<li>An api or service is created to parse CSP reports</li>
+<li>Reporting is enabled via the <code>report-uri</code> directive</li>
+<li>The team understands what limitations CSP adds, and how to check for violations</li>
+<li>The team has a process for updating the policy as requirements change</li>
+</ul>
+
+<h2 id="resources">Resources</h2>
+
+<ul>
+<li><a href="https://scotthelme.co.uk/content-security-policy-an-introduction/">https://scotthelme.co.uk/content-security-policy-an-introduction/</a></li>
+<li><a href="https://developers.google.com/web/fundamentals/security/csp/">https://developers.google.com/web/fundamentals/security/csp/</a></li>
+</ul>
+
+
+
+          
+          
+          
+          
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+                
+              
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+            
+          
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+
+          
+            <h2>Related Content</h2>
+            
+            
+              <li>
+                Practice:
+                <a href="https://securefoundation.github.io/react/markup-injection/">Markup Injection</a>
+              </li>
+            
+          
+          
+        </div>
+
+        
+        
+        <div class="article-toc" >
+            <h3>Contents</h3>
+            <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#description">Description</a></li>
+<li><a href="#acceptance-criteria">Acceptance Criteria</a></li>
+<li><a href="#resources">Resources</a></li>
+</ul></li>
+</ul>
+</nav>
+        </div>
+        
+        
+
+        
+
+
+        
+    </div>
+    <nav id="article-nav">
+    
+    <a href="/react/code-injection/" id="article-nav-newer" class="article-nav-link-wrap">
+        <div class="article-nav-title"><span>&lt;</span>&nbsp;
+            Code Injection
+        </div>
+    </a>
+    
+    
+    <a href="/contexts/" id="article-nav-older" class="article-nav-link-wrap">
+        <div class="article-nav-title">Contexts&nbsp;<span>&gt;</span></div>
+    </a>
+    
+</nav>
+</article>
+
+                
+            
+          </ul>
+        </div>
+
+      </section>
+    </section>
+    <footer id="footer">
+  
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2017 Secure Foundation&nbsp;
+        </div>
+    </div>
+    
+    
+
+    <script src="https://code.jquery.com/jquery-3.2.0.min.js"></script>
+    
+    <script src="https://securefoundation.github.io/js/add-code-icons.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha256-NuCn4IvuZXdBaFKJOAcsU2Q3ZpwbdFisd5dux4jkQ5w=" crossorigin="anonymous" />
+    
+    <link rel="stylesheet" href="https://securefoundation.github.io/css/securefoundation.css"/>
+
+    <script>
+        document.getElementById('main-nav-toggle').addEventListener('click', function () {
+            var header = document.getElementById('header');
+            if (header.classList.contains('mobile-on')) {
+                header.classList.remove('mobile-on');
+            } else {
+                header.classList.add('mobile-on');
+            }
+        });
+    </script>
+</footer>
+
+  </div>
+</body>
+</html>

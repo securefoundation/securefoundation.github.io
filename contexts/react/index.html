@@ -1,0 +1,1621 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>React // Secure Foundation</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta property="og:title" content="React" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:url" content="https://securefoundation.github.io/contexts/react/" />
+
+
+    <link href="https://securefoundation.github.io/contexts/react/index.xml" rel="alternate" type="application/rss+xml" title="Secure Foundation" />
+    <link rel="shortcut icon" href="/favicon.png">
+
+    <link href="https://securefoundation.github.io/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+    <link href="https://securefoundation.github.io/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="https://securefoundation.github.io/css/style.css">
+
+    <link href="http://gmpg.org/xfn/11" rel="profile">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+
+    <meta name="generator" content="Hugo 0.19" />
+</head>
+
+
+
+
+<body>
+  <div id="container">
+    <header id="header">
+    <div id="header-outer" class="outer">
+        <div id="header-inner" class="inner">
+            <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+            <a id="logo" class="logo-text" href="https://securefoundation.github.io/">
+              Secure Foundation
+            </a>
+            <span class="subtitle-text">
+              
+                // react
+              
+              
+            </span>
+            <nav id="main-nav">
+                
+            </nav>
+            <nav id="sub-nav">
+                <div id="search-form-wrap">
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+
+    
+    <section id="main" class="outer">
+      <section class="layout-wrap">
+
+        <div class="layout-wrap-inner">
+          <ul>
+            
+                
+                  
+                  <article class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        <header class="article-header">
+          <h1 class="article-title" itemprop="name">
+            <a href="/react/code-injection/"><i class="fa fa-link fa-1" aria-hidden="true"></i></a>
+            Code Injection
+          </h1>
+        </header>
+        
+        <div class="article-meta">
+            
+            
+            
+        </div>
+        <div class="article-entry" itemprop="articleBody">
+          
+
+<h2 id="bad-practice">Bad Practice</h2>
+
+<p><s>Eval</s> Evil</p>
+
+
+
+  
+
+
+<div class="badcode"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">class</span> <span style="color: #a6e22e">WelcomeHeading</span> <span style="color: #66d9ef">extends</span> <span style="color: #a6e22e">React</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Component</span> <span style="color: #f8f8f2">{</span>
+  <span style="color: #a6e22e">render</span><span style="color: #f8f8f2">()</span> <span style="color: #f8f8f2">{</span>
+<span style="background-color: #49483e">    <span style="color: #66d9ef">var</span> <span style="color: #a6e22e">userData</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">eval(</span><span style="color: #66d9ef">this</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">props</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">untrustedData</span><span style="color: #f8f8f2">);</span>
+</span>    <span style="color: #66d9ef">var</span> <span style="color: #a6e22e">userName</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">userData</span><span style="color: #f8f8f2">[</span><span style="color: #e6db74">&#39;userName&#39;</span><span style="color: #f8f8f2">];</span>
+    <span style="color: #66d9ef">return</span> <span style="color: #f8f8f2">(</span>
+      <span style="color: #f8f8f2">&lt;</span><span style="color: #f92672">div</span> <span style="color: #a6e22e">className</span><span style="color: #f92672">=</span><span style="color: #e6db74">&quot;welcomeHeading&quot;</span><span style="color: #f8f8f2">&gt;</span>
+        Welcome, <span style="color: #f8f8f2">{</span><span style="color: #a6e22e">userName</span><span style="color: #f8f8f2">}</span>
+      <span style="color: #f8f8f2">&lt;/</span><span style="color: #f92672">div</span><span style="color: #f8f8f2">&gt;</span>
+    <span style="color: #f8f8f2">)</span>
+  <span style="color: #f8f8f2">}</span>
+<span style="color: #f8f8f2">}</span>
+</pre></div>
+
+
+
+<p>Eval can technically be used to deserialize json… but don’t do it!</p>
+
+<h2 id="good-practice">Good Practice</h2>
+
+<p>JSON.parse should be used to deserialize JSON data</p>
+
+<p>
+
+  
+
+
+<div class="goodcode"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">class</span> <span style="color: #a6e22e">WelcomeHeading</span> <span style="color: #66d9ef">extends</span> <span style="color: #a6e22e">React</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Component</span> <span style="color: #f8f8f2">{</span>
+  <span style="color: #a6e22e">render</span><span style="color: #f8f8f2">()</span> <span style="color: #f8f8f2">{</span>
+<span style="background-color: #49483e">    <span style="color: #66d9ef">var</span> <span style="color: #a6e22e">userData</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">JSON</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">parse</span><span style="color: #f8f8f2">(</span><span style="color: #66d9ef">this</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">props</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">untrustedData</span><span style="color: #f8f8f2">);</span>
+</span>    <span style="color: #66d9ef">var</span> <span style="color: #a6e22e">userName</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">userData</span><span style="color: #f8f8f2">[</span><span style="color: #e6db74">&#39;userName&#39;</span><span style="color: #f8f8f2">];</span>
+    <span style="color: #66d9ef">return</span> <span style="color: #f8f8f2">(</span>
+      <span style="color: #f8f8f2">&lt;</span><span style="color: #f92672">div</span> <span style="color: #a6e22e">className</span><span style="color: #f92672">=</span><span style="color: #e6db74">&quot;welcomeHeading&quot;</span><span style="color: #f8f8f2">&gt;</span>
+        Welcome, <span style="color: #f8f8f2">{</span><span style="color: #a6e22e">userName</span><span style="color: #f8f8f2">}</span>
+      <span style="color: #f8f8f2">&lt;/</span><span style="color: #f92672">div</span><span style="color: #f8f8f2">&gt;</span>
+    <span style="color: #f8f8f2">)</span>
+  <span style="color: #f8f8f2">}</span>
+<span style="color: #f8f8f2">}</span>
+</pre></div>
+
+</p>
+
+
+
+          
+          
+          
+          
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+                
+              
+            
+          
+            
+          
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+                
+              
+            
+          
+            
+          
+            
+          
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+                
+              
+            
+          
+            
+          
+
+          
+            <h2>Related Content</h2>
+            
+            
+              <li>
+                Practice:
+                <a href="https://securefoundation.github.io/react/object-injection/">Object Injection</a>
+              </li>
+            
+              <li>
+                Practice:
+                <a href="https://securefoundation.github.io/react/schema-validation/">Schema Validation</a>
+              </li>
+            
+              <li>
+                Practice:
+                <a href="https://securefoundation.github.io/react/string-template-injection/">String Template Injection</a>
+              </li>
+            
+          
+          
+        </div>
+
+        
+        
+        <div class="article-toc" >
+            <h3>Contents</h3>
+            <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#bad-practice">Bad Practice</a></li>
+<li><a href="#good-practice">Good Practice</a></li>
+</ul></li>
+</ul>
+</nav>
+        </div>
+        
+        
+
+        
+
+
+        
+    </div>
+    <nav id="article-nav">
+    
+    <a href="/spring/csrf-protection/" id="article-nav-newer" class="article-nav-link-wrap">
+        <div class="article-nav-title"><span>&lt;</span>&nbsp;
+            CSRF Protection
+        </div>
+    </a>
+    
+    
+    <a href="/tasks/content-security-policy/" id="article-nav-older" class="article-nav-link-wrap">
+        <div class="article-nav-title">Content Security Policy&nbsp;<span>&gt;</span></div>
+    </a>
+    
+</nav>
+</article>
+
+                
+                  
+                  <article class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        <header class="article-header">
+          <h1 class="article-title" itemprop="name">
+            <a href="/react/markup-injection/"><i class="fa fa-link fa-1" aria-hidden="true"></i></a>
+            Markup Injection
+          </h1>
+        </header>
+        
+        <div class="article-meta">
+            
+            
+            
+        </div>
+        <div class="article-entry" itemprop="articleBody">
+          
+
+<h2 id="bad-practice">Bad Practice</h2>
+
+<p>dangerouslySetInnerHTML is called dangerous for a reason!</p>
+
+
+
+  
+
+
+<div class="badcode"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">class</span> <span style="color: #a6e22e">WelcomeHeading</span> <span style="color: #66d9ef">extends</span> <span style="color: #a6e22e">React</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Component</span> <span style="color: #f8f8f2">{</span>
+  <span style="color: #a6e22e">render</span><span style="color: #f8f8f2">()</span> <span style="color: #f8f8f2">{</span>
+    <span style="color: #66d9ef">return</span> <span style="color: #f8f8f2">(</span>
+      <span style="color: #f8f8f2">&lt;</span><span style="color: #f92672">div</span> <span style="color: #a6e22e">className</span><span style="color: #f92672">=</span><span style="color: #e6db74">&quot;welcomeHeading&quot;</span>
+<span style="background-color: #49483e">        <span style="color: #a6e22e">dangerouslySetInnerHTML</span><span style="color: #f92672">=</span><span style="color: #f8f8f2">{{</span><span style="color: #a6e22e">__html</span><span style="color: #f8f8f2">:</span> <span style="color: #e6db74">&#39;Welcome, &#39;</span> <span style="color: #f92672">+</span> <span style="color: #66d9ef">this</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">props</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">userName</span><span style="color: #f8f8f2">}}&gt;</span>
+</span>      <span style="color: #f8f8f2">&lt;/</span><span style="color: #f92672">div</span><span style="color: #f8f8f2">&gt;</span>
+    <span style="color: #f8f8f2">)</span>
+  <span style="color: #f8f8f2">}</span>
+<span style="color: #f8f8f2">}</span>
+</pre></div>
+
+
+
+<h2 id="good-practice">Good Practice</h2>
+
+<p>What happens in a React component?</p>
+
+<p>
+
+  
+
+
+<div class="goodcode"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">class</span> <span style="color: #a6e22e">WelcomeHeading</span> <span style="color: #66d9ef">extends</span> <span style="color: #a6e22e">React</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Component</span> <span style="color: #f8f8f2">{</span>
+  <span style="color: #a6e22e">render</span><span style="color: #f8f8f2">()</span> <span style="color: #f8f8f2">{</span>
+    <span style="color: #66d9ef">return</span> <span style="color: #f8f8f2">(</span>
+      <span style="color: #f8f8f2">&lt;</span><span style="color: #f92672">div</span> <span style="color: #a6e22e">className</span><span style="color: #f92672">=</span><span style="color: #e6db74">&quot;welcomeHeading&quot;</span><span style="color: #f8f8f2">&gt;</span>
+<span style="background-color: #49483e">        Welcome, <span style="color: #f8f8f2">{</span><span style="color: #66d9ef">this</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">props</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">userName</span><span style="color: #f8f8f2">}</span>
+</span>      <span style="color: #f8f8f2">&lt;/</span><span style="color: #f92672">div</span><span style="color: #f8f8f2">&gt;</span>
+    <span style="color: #f8f8f2">)</span>
+  <span style="color: #f8f8f2">}</span>
+<span style="color: #f8f8f2">}</span>
+</pre></div>
+
+</p>
+
+<p>The content is encoded automatically!</p>
+
+
+
+          
+          
+          
+          
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+                
+              
+            
+          
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+            
+          
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+
+          
+            <h2>Related Content</h2>
+            
+            
+              <li>
+                Task:
+                <a href="https://securefoundation.github.io/tasks/content-security-policy/">Content Security Policy</a>
+              </li>
+            
+          
+          
+        </div>
+
+        
+        
+        <div class="article-toc" >
+            <h3>Contents</h3>
+            <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#bad-practice">Bad Practice</a></li>
+<li><a href="#good-practice">Good Practice</a></li>
+</ul></li>
+</ul>
+</nav>
+        </div>
+        
+        
+
+        
+
+
+        
+    </div>
+    <nav id="article-nav">
+    
+    <a href="/contexts/hibernate/" id="article-nav-newer" class="article-nav-link-wrap">
+        <div class="article-nav-title"><span>&lt;</span>&nbsp;
+            Hibernate
+        </div>
+    </a>
+    
+    
+    <a href="/react/object-injection/" id="article-nav-older" class="article-nav-link-wrap">
+        <div class="article-nav-title">Object Injection&nbsp;<span>&gt;</span></div>
+    </a>
+    
+</nav>
+</article>
+
+                
+                  
+                  <article class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        <header class="article-header">
+          <h1 class="article-title" itemprop="name">
+            <a href="/react/object-injection/"><i class="fa fa-link fa-1" aria-hidden="true"></i></a>
+            Object Injection
+          </h1>
+        </header>
+        
+        <div class="article-meta">
+            
+            
+            
+        </div>
+        <div class="article-entry" itemprop="articleBody">
+          
+
+<h2 id="bad-practice">Bad Practice</h2>
+
+<p>What happens if userName is not a string?</p>
+
+
+
+  
+
+
+<div class="badcode"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">class</span> <span style="color: #a6e22e">WelcomeHeading</span> <span style="color: #66d9ef">extends</span> <span style="color: #a6e22e">React</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Component</span> <span style="color: #f8f8f2">{</span>
+  <span style="color: #a6e22e">render</span><span style="color: #f8f8f2">()</span> <span style="color: #f8f8f2">{</span>
+    <span style="color: #66d9ef">var</span> <span style="color: #a6e22e">userData</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">JSON</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">parse</span><span style="color: #f8f8f2">(</span><span style="color: #66d9ef">this</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">props</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">untrustedData</span><span style="color: #f8f8f2">);</span>
+    <span style="color: #66d9ef">return</span> <span style="color: #f8f8f2">(</span>
+      <span style="color: #f8f8f2">&lt;</span><span style="color: #f92672">div</span> <span style="color: #a6e22e">className</span><span style="color: #f92672">=</span><span style="color: #e6db74">&quot;welcomeHeading&quot;</span><span style="color: #f8f8f2">&gt;</span>
+<span style="background-color: #49483e">        Welcome, <span style="color: #f8f8f2">{</span><span style="color: #a6e22e">userData</span><span style="color: #f8f8f2">[</span><span style="color: #e6db74">&#39;userName&#39;</span><span style="color: #f8f8f2">]}</span>
+</span>      <span style="color: #f8f8f2">&lt;/</span><span style="color: #f92672">div</span><span style="color: #f8f8f2">&gt;</span>
+    <span style="color: #f8f8f2">)</span>
+  <span style="color: #f8f8f2">}</span>
+<span style="color: #f8f8f2">}</span>
+</pre></div>
+
+
+
+<p>It could be almost anything!</p>
+
+<p>Including an object, that under some conditions could bypass react’s encoding and lead to an XSS vulnerability!</p>
+
+<p><a href="http://danlec.com/blog/xss-via-a-spoofed-react-element">http://danlec.com/blog/xss-via-a-spoofed-react-element</a></p>
+
+<p>React has since been updated with some mitigations for this, but they are not complete.</p>
+
+<p>These attacks could also be made against other libraries, or even other services called by the application.</p>
+
+<h2 id="good-practice">Good Practice</h2>
+
+<p>Validate the type of variables that come from untrusted input</p>
+
+<p>
+
+  
+
+
+<div class="goodcode"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">class</span> <span style="color: #a6e22e">WelcomeHeading</span> <span style="color: #66d9ef">extends</span> <span style="color: #a6e22e">React</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Component</span> <span style="color: #f8f8f2">{</span>
+  <span style="color: #a6e22e">render</span><span style="color: #f8f8f2">()</span> <span style="color: #f8f8f2">{</span>
+    <span style="color: #66d9ef">var</span> <span style="color: #a6e22e">userData</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">JSON</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">parse</span><span style="color: #f8f8f2">(</span><span style="color: #66d9ef">this</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">props</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">untrustedData</span><span style="color: #f8f8f2">);</span>
+<span style="background-color: #49483e">    <span style="color: #66d9ef">if</span> <span style="color: #f8f8f2">(</span><span style="color: #f92672">!</span><span style="color: #a6e22e">validate</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">userData</span><span style="color: #f8f8f2">))</span> <span style="color: #66d9ef">return</span> <span style="color: #a6e22e">handleValidationError</span><span style="color: #f8f8f2">();</span>
+</span>    <span style="color: #66d9ef">return</span> <span style="color: #f8f8f2">(</span>
+      <span style="color: #f8f8f2">&lt;</span><span style="color: #f92672">div</span> <span style="color: #a6e22e">className</span><span style="color: #f92672">=</span><span style="color: #e6db74">&quot;welcomeHeading&quot;</span><span style="color: #f8f8f2">&gt;</span>
+        Welcome, <span style="color: #f8f8f2">{</span><span style="color: #a6e22e">userData</span><span style="color: #f8f8f2">[</span><span style="color: #e6db74">&#39;userName&#39;</span><span style="color: #f8f8f2">]}</span>
+      <span style="color: #f8f8f2">&lt;/</span><span style="color: #f92672">div</span><span style="color: #f8f8f2">&gt;</span>
+    <span style="color: #f8f8f2">)</span>
+  <span style="color: #f8f8f2">}</span>
+<span style="color: #f8f8f2">}</span>
+</pre></div>
+
+</p>
+
+<p>Validate types that come from untrusted json input or query parameters.</p>
+
+<p>Where does <code>validate()</code> come from? For JSON, consider using a json schema library like <a href="https://github.com/epoberezkin/ajv">AJV</a></p>
+
+
+
+          
+          
+          
+          
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+                
+              
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+                
+              
+            
+          
+            
+          
+            
+          
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+                
+              
+            
+          
+            
+          
+
+          
+            <h2>Related Content</h2>
+            
+            
+              <li>
+                Practice:
+                <a href="https://securefoundation.github.io/react/code-injection/">Code Injection</a>
+              </li>
+            
+              <li>
+                Practice:
+                <a href="https://securefoundation.github.io/react/schema-validation/">Schema Validation</a>
+              </li>
+            
+              <li>
+                Practice:
+                <a href="https://securefoundation.github.io/react/string-template-injection/">String Template Injection</a>
+              </li>
+            
+          
+          
+        </div>
+
+        
+        
+        <div class="article-toc" >
+            <h3>Contents</h3>
+            <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#bad-practice">Bad Practice</a></li>
+<li><a href="#good-practice">Good Practice</a></li>
+</ul></li>
+</ul>
+</nav>
+        </div>
+        
+        
+
+        
+
+
+        
+    </div>
+    <nav id="article-nav">
+    
+    <a href="/react/markup-injection/" id="article-nav-newer" class="article-nav-link-wrap">
+        <div class="article-nav-title"><span>&lt;</span>&nbsp;
+            Markup Injection
+        </div>
+    </a>
+    
+    
+    <a href="/contexts/react/" id="article-nav-older" class="article-nav-link-wrap">
+        <div class="article-nav-title">React&nbsp;<span>&gt;</span></div>
+    </a>
+    
+</nav>
+</article>
+
+                
+                  
+                  <article class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        <header class="article-header">
+          <h1 class="article-title" itemprop="name">
+            <a href="/react/schema-validation/"><i class="fa fa-link fa-1" aria-hidden="true"></i></a>
+            Schema Validation
+          </h1>
+        </header>
+        
+        <div class="article-meta">
+            
+            
+            
+        </div>
+        <div class="article-entry" itemprop="articleBody">
+          
+
+<h2 id="good-practice">Good Practice</h2>
+
+<p>Schema validation tools make it easy to validate types as well as business rules.</p>
+
+
+
+  
+
+
+<div class="goodcode"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">var</span> <span style="color: #a6e22e">ajv</span> <span style="color: #f92672">=</span> <span style="color: #66d9ef">new</span> <span style="color: #a6e22e">Ajv</span><span style="color: #f8f8f2">;</span>
+<span style="color: #66d9ef">var</span> <span style="color: #a6e22e">schema</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">{</span>
+  <span style="color: #e6db74">&quot;properties&quot;</span><span style="color: #f92672">:</span> <span style="color: #f8f8f2">{</span>
+    <span style="color: #e6db74">&quot;foo&quot;</span><span style="color: #f92672">:</span> <span style="color: #f8f8f2">{</span> <span style="color: #e6db74">&quot;type&quot;</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&quot;number&quot;</span> <span style="color: #f8f8f2">},</span>
+    <span style="color: #e6db74">&quot;bar&quot;</span><span style="color: #f92672">:</span> <span style="color: #f8f8f2">{</span> <span style="color: #e6db74">&quot;type&quot;</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&quot;string&quot;</span> <span style="color: #f8f8f2">}</span>
+  <span style="color: #f8f8f2">}</span>
+<span style="color: #f8f8f2">};</span>
+<span style="color: #66d9ef">var</span> <span style="color: #a6e22e">validate</span> <span style="color: #f92672">=</span> <span style="color: #a6e22e">ajv</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">compile</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">schema</span><span style="color: #f8f8f2">);</span>
+
+<span style="color: #a6e22e">console</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">log</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">validate</span><span style="color: #f8f8f2">({</span> <span style="color: #e6db74">&quot;foo&quot;</span><span style="color: #f92672">:</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">,</span> <span style="color: #e6db74">&quot;bar&quot;</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&quot;1&quot;</span> <span style="color: #f8f8f2">}));</span> <span style="color: #75715e">// true</span>
+<span style="color: #a6e22e">console</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">log</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">validate</span><span style="color: #f8f8f2">({</span> <span style="color: #e6db74">&quot;foo&quot;</span><span style="color: #f92672">:</span> <span style="color: #f8f8f2">{</span> <span style="color: #e6db74">&quot;surprise&quot;</span><span style="color: #f92672">:</span> <span style="color: #ae81ff">1</span> <span style="color: #f8f8f2">}</span> <span style="color: #f8f8f2">}));</span> <span style="color: #75715e">// false</span>
+</pre></div>
+
+
+
+<p><a href="https://github.com/epoberezkin/ajv">https://github.com/epoberezkin/ajv</a></p>
+
+
+
+          
+          
+          
+          
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+                
+              
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+                
+              
+            
+          
+            
+          
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+            
+          
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+                
+              
+            
+          
+            
+          
+
+          
+            <h2>Related Content</h2>
+            
+            
+              <li>
+                Practice:
+                <a href="https://securefoundation.github.io/react/code-injection/">Code Injection</a>
+              </li>
+            
+              <li>
+                Practice:
+                <a href="https://securefoundation.github.io/react/object-injection/">Object Injection</a>
+              </li>
+            
+              <li>
+                Practice:
+                <a href="https://securefoundation.github.io/react/string-template-injection/">String Template Injection</a>
+              </li>
+            
+          
+          
+        </div>
+
+        
+        
+        <div class="article-toc" >
+            <h3>Contents</h3>
+            <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#good-practice">Good Practice</a></li>
+</ul></li>
+</ul>
+</nav>
+        </div>
+        
+        
+
+        
+
+
+        
+    </div>
+    <nav id="article-nav">
+    
+    <a href="/react/" id="article-nav-newer" class="article-nav-link-wrap">
+        <div class="article-nav-title"><span>&lt;</span>&nbsp;
+            Reacts
+        </div>
+    </a>
+    
+    
+    <a href="/" id="article-nav-older" class="article-nav-link-wrap">
+        <div class="article-nav-title">Secure Foundation&nbsp;<span>&gt;</span></div>
+    </a>
+    
+</nav>
+</article>
+
+                
+                  
+                  <article class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        <header class="article-header">
+          <h1 class="article-title" itemprop="name">
+            <a href="/react/string-template-injection/"><i class="fa fa-link fa-1" aria-hidden="true"></i></a>
+            String Template Injection
+          </h1>
+        </header>
+        
+        <div class="article-meta">
+            
+            
+            
+        </div>
+        <div class="article-entry" itemprop="articleBody">
+          
+
+<h2 id="bad-practice">Bad Practice</h2>
+
+<p>‘${}’ in string templates are not safe like ‘{}’ in JSX!</p>
+
+
+
+  
+
+
+<div class="badcode"><pre style="line-height: 125%"><span></span><span style="color: #a6e22e">app</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">get</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;/&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #66d9ef">function</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">req</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">res</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
+  <span style="color: #66d9ef">var</span> <span style="color: #a6e22e">template</span> <span style="color: #f92672">=</span> <span style="color: #e6db74">`</span>
+<span style="color: #e6db74">    &lt;html&gt;</span>
+<span style="color: #e6db74">      &lt;body&gt;</span>
+<span style="background-color: #49483e"><span style="color: #e6db74">        &lt;header&gt;Hi, ${</span><span style="color: #a6e22e">req</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">query</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">user</span><span style="color: #e6db74">}&lt;/header&gt;</span>
+</span><span style="color: #e6db74">      &lt;/body&gt;</span>
+<span style="color: #e6db74">    &lt;/html&gt;</span>
+<span style="color: #e6db74">  `</span><span style="color: #f8f8f2">;</span>
+  <span style="color: #a6e22e">res</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">send</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">template</span><span style="color: #f8f8f2">);</span>
+<span style="color: #f8f8f2">});</span>
+</pre></div>
+
+
+
+<p>No escaping is done when using string templates</p>
+
+<p>This is especially relevent when using server side rendering with express</p>
+
+<h2 id="good-practice">Good Practice</h2>
+
+<p>JSX will protect us against XSS attacks, even on the server</p>
+
+<p>
+
+  
+
+
+<div class="goodcode"><pre style="line-height: 125%"><span></span><span style="color: #a6e22e">app</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">get</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&#39;/&#39;</span><span style="color: #f8f8f2">,</span> <span style="color: #66d9ef">function</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">req</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">res</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
+  <span style="color: #66d9ef">var</span> <span style="color: #a6e22e">template</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">(</span>
+    <span style="color: #f8f8f2">&lt;</span><span style="color: #f92672">html</span><span style="color: #f8f8f2">&gt;</span>
+      <span style="color: #f8f8f2">&lt;</span><span style="color: #f92672">body</span><span style="color: #f8f8f2">&gt;</span>
+<span style="background-color: #49483e">        <span style="color: #f8f8f2">&lt;</span><span style="color: #f92672">header</span><span style="color: #f8f8f2">&gt;</span>Hi, <span style="color: #f8f8f2">{</span><span style="color: #a6e22e">req</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">query</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">user</span><span style="color: #f8f8f2">}&lt;/</span><span style="color: #f92672">header</span><span style="color: #f8f8f2">&gt;</span>
+</span>      <span style="color: #f8f8f2">&lt;/</span><span style="color: #f92672">body</span><span style="color: #f8f8f2">&gt;</span>
+    <span style="color: #f8f8f2">&lt;/</span><span style="color: #f92672">html</span><span style="color: #f8f8f2">&gt;</span>
+  <span style="color: #f8f8f2">);</span>
+  <span style="color: #a6e22e">res</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">send</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">ReactDOMServer</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">renderToString</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">template</span><span style="color: #f8f8f2">));</span>
+<span style="color: #f8f8f2">});</span>
+</pre></div>
+
+</p>
+
+
+
+          
+          
+          
+          
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+                
+              
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+                
+              
+            
+          
+            
+          
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+                
+              
+            
+          
+            
+          
+            
+          
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+
+          
+            <h2>Related Content</h2>
+            
+            
+              <li>
+                Practice:
+                <a href="https://securefoundation.github.io/react/code-injection/">Code Injection</a>
+              </li>
+            
+              <li>
+                Practice:
+                <a href="https://securefoundation.github.io/react/object-injection/">Object Injection</a>
+              </li>
+            
+              <li>
+                Practice:
+                <a href="https://securefoundation.github.io/react/schema-validation/">Schema Validation</a>
+              </li>
+            
+          
+          
+        </div>
+
+        
+        
+        <div class="article-toc" >
+            <h3>Contents</h3>
+            <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#bad-practice">Bad Practice</a></li>
+<li><a href="#good-practice">Good Practice</a></li>
+</ul></li>
+</ul>
+</nav>
+        </div>
+        
+        
+
+        
+
+
+        
+    </div>
+    <nav id="article-nav">
+    
+    <a href="/spring/" id="article-nav-newer" class="article-nav-link-wrap">
+        <div class="article-nav-title"><span>&lt;</span>&nbsp;
+            Springs
+        </div>
+    </a>
+    
+    
+    <a href="/tasks/" id="article-nav-older" class="article-nav-link-wrap">
+        <div class="article-nav-title">Tasks&nbsp;<span>&gt;</span></div>
+    </a>
+    
+</nav>
+</article>
+
+                
+            
+                
+                  
+                  <article class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        <header class="article-header">
+          <h1 class="article-title" itemprop="name">
+            <a href="/tasks/content-security-policy/"><i class="fa fa-link fa-1" aria-hidden="true"></i></a>
+            Content Security Policy
+          </h1>
+        </header>
+        
+        <div class="article-meta">
+            
+            
+            
+        </div>
+        <div class="article-entry" itemprop="articleBody">
+          
+
+<h2 id="description">Description</h2>
+
+<p>Content Security Policy limits the resources that a web browser will
+load, making it more difficult for attackers to carry out a
+<a href="https://www.owasp.org/index.php/Cross-site_Scripting_%28XSS%29">Cross Site Scripting</a>
+attack.</p>
+
+<p>When enabling CSP, we can define a whitelist of resources that the
+browser will load. Any resources (even including inline scripts) that
+are not explicitly enabled in the whitelist will be blocked by the browser.</p>
+
+<p>As an <a href="https://blogs.technet.microsoft.com/srd/2013/09/27/software-defense-series-exploit-mitigation-and-vulnerability-detection/">exploit mitigation</a>,
+it&rsquo;s important to remember that while CSP makes exploitation more
+difficult, it does not prevent the bugs that make an exploit possible
+in the first place (lack of appropriate
+encoding/sanitization). Therefore, its protection will never be
+complete, and people will continue to find bypasses for even the most
+rigerous policies. That said, it&rsquo;s an important part of a Defense in
+Depth strategy for any web application.</p>
+
+<h2 id="acceptance-criteria">Acceptance Criteria</h2>
+
+<ul>
+<li>A policy is created that blocks any resources not required by the application</li>
+<li>The policy is enabled via the <code>Content-Security-Policy</code> header</li>
+<li>An api or service is created to parse CSP reports</li>
+<li>Reporting is enabled via the <code>report-uri</code> directive</li>
+<li>The team understands what limitations CSP adds, and how to check for violations</li>
+<li>The team has a process for updating the policy as requirements change</li>
+</ul>
+
+<h2 id="resources">Resources</h2>
+
+<ul>
+<li><a href="https://scotthelme.co.uk/content-security-policy-an-introduction/">https://scotthelme.co.uk/content-security-policy-an-introduction/</a></li>
+<li><a href="https://developers.google.com/web/fundamentals/security/csp/">https://developers.google.com/web/fundamentals/security/csp/</a></li>
+</ul>
+
+
+
+          
+          
+          
+          
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+                
+              
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+            
+          
+            
+          
+            
+              
+
+              
+                
+              
+              
+
+              
+            
+          
+            
+          
+
+          
+            <h2>Related Content</h2>
+            
+            
+              <li>
+                Practice:
+                <a href="https://securefoundation.github.io/react/markup-injection/">Markup Injection</a>
+              </li>
+            
+              <li>
+                Practice:
+                <a href="https://securefoundation.github.io/react/markup-injection/">Markup Injection</a>
+              </li>
+            
+          
+          
+        </div>
+
+        
+        
+        <div class="article-toc" >
+            <h3>Contents</h3>
+            <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#description">Description</a></li>
+<li><a href="#acceptance-criteria">Acceptance Criteria</a></li>
+<li><a href="#resources">Resources</a></li>
+</ul></li>
+</ul>
+</nav>
+        </div>
+        
+        
+
+        
+
+
+        
+    </div>
+    <nav id="article-nav">
+    
+    <a href="/react/code-injection/" id="article-nav-newer" class="article-nav-link-wrap">
+        <div class="article-nav-title"><span>&lt;</span>&nbsp;
+            Code Injection
+        </div>
+    </a>
+    
+    
+    <a href="/contexts/" id="article-nav-older" class="article-nav-link-wrap">
+        <div class="article-nav-title">Contexts&nbsp;<span>&gt;</span></div>
+    </a>
+    
+</nav>
+</article>
+
+                
+            
+          </ul>
+        </div>
+
+      </section>
+    </section>
+    <footer id="footer">
+  
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2017 Secure Foundation&nbsp;
+        </div>
+    </div>
+    
+    
+
+    <script src="https://code.jquery.com/jquery-3.2.0.min.js"></script>
+    
+    <script src="https://securefoundation.github.io/js/add-code-icons.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha256-NuCn4IvuZXdBaFKJOAcsU2Q3ZpwbdFisd5dux4jkQ5w=" crossorigin="anonymous" />
+    
+    <link rel="stylesheet" href="https://securefoundation.github.io/css/securefoundation.css"/>
+
+    <script>
+        document.getElementById('main-nav-toggle').addEventListener('click', function () {
+            var header = document.getElementById('header');
+            if (header.classList.contains('mobile-on')) {
+                header.classList.remove('mobile-on');
+            } else {
+                header.classList.add('mobile-on');
+            }
+        });
+    </script>
+</footer>
+
+  </div>
+</body>
+</html>
